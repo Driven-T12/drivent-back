@@ -6,7 +6,7 @@ export function handleApplicationErrors(
   err: RequestError | ApplicationError | Error,
   _req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction, // eslint-disable-line @typescript-eslint/no-unused-vars
 ) {
   if (err.name === 'CannotEnrollBeforeStartDateError') {
     return res.status(httpStatus.BAD_REQUEST).send({
@@ -58,6 +58,10 @@ export function handleApplicationErrors(
     return res.status((err as RequestError).status).send({
       message: err.message,
     });
+  }
+
+  if (err.name === 'CannotBookError') {
+    return res.status(httpStatus.FORBIDDEN).send(err.message);
   }
 
   /* eslint-disable-next-line no-console */
